@@ -3,6 +3,7 @@ package re
 import (
 	"runtime"
 	"strings"
+	"errors"
 )
 
 func New(op Op, internal error, args ...interface{}) *Bag {
@@ -14,6 +15,10 @@ func New(op Op, internal error, args ...interface{}) *Bag {
 		parts := strings.Split(funcPt.Name(), "/")
 		secs := strings.SplitN(parts[len(parts)-1], ".", 2)
 		functionName = secs[len(secs)-1]
+	}
+
+	if internal == nil {
+		internal = errors.New("Not set error in re.Error")
 	}
 
 	e := &Bag{
